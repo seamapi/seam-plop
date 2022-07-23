@@ -1,0 +1,9 @@
+{
+  "name": "seam-plop",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "plop": "^3.1.1"
+  }
+}
