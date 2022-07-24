@@ -1,15 +1,20 @@
 {
   "name": "seam-plop",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
+  "bin": {
+    "seam-plop": "./bin.js"
+  },
   "scripts": {
     "start": "plop",
     "test": "echo 'no tests' && exit 1"
   },
   "dependencies": {
+    "inquirer-directory": "^2.2.0",
     "node-plop": "^0.31.0",
-    "plop": "^3.1.1"
+    "plop": "^3.1.1",
+    "plop-pack-npm-install-packages": "^0.0.3"
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^9.0.2",

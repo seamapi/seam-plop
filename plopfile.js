@@ -1,3 +1,5 @@
+inquirer.registerPrompt("directory", require("inquirer-directory"))
+
 export default (plop) => {
   plop.setGenerator("ava-config", {
     description: "Create ava.config.js",
@@ -92,6 +94,46 @@ export default (plop) => {
         path: "./.prettierrc",
         templateFile: "./plop-templates/gitignore.hbs",
       },
+    ],
+  })
+
+  plop.setGenerator("node-pg-migrate", {
+    description: "Initialize node-pg-migrate in project",
+    prompts: [],
+    actions: [
+      {
+        type: "add",
+        path: "src/scripts/reset-db.ts",
+        template: `import resetDb from "lib/reset-db"\n\nresetDb()`,
+      },
+      {
+        type: "add",
+        path: "src/scripts/migrate-db.ts",
+        template: `import migrateDb from "lib/migrate-db"\n\nmigrateDb()`,
+      },
+      {
+        type: "add",
+        path: "src/lib/db/migrate-db.ts",
+        templateFile: "./plop-templates/migrate-db.ts.hbs",
+      },
+      {
+        type: "add",
+        path: "src/lib/db/reset-db.ts",
+        templateFile: "./plop-templates/reset-db.ts.hbs",
+      },
+      {
+        type: "modify",
+        path: "./package.json",
+        transform: (template, data, cfg) => {
+          const pkg = JSON.parse(template)
+          pkg.scripts["db:create-migration"] =
+            "node-pg-migrate --migration-file-language ts -m src/db/migrations create"
+          pkg.scripts["db:migrate"] = "esr src/scripts/migrate-db.ts"
+          pkg.scripts["db:reset"] = "esr src/scripts/reset-db.ts"
+          return JSON.stringify(pkg, null, 2)
+        },
+      },
+      // TODO Install node-pg-migrate
     ],
   })
 }
