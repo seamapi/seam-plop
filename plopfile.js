@@ -1,5 +1,3 @@
-inquirer.registerPrompt("directory", require("inquirer-directory"))
-
 export default (plop) => {
   plop.setGenerator("ava-config", {
     description: "Create ava.config.js",
