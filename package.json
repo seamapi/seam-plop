@@ -1,14 +1,15 @@
 {
   "name": "seam-plop",
   "type": "module",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "index.js",
   "bin": {
     "seam-plop": "./bin.js"
   },
   "scripts": {
     "start": "plop",
-    "test": "echo 'no tests' && exit 1"
+    "test": "ava",
+    "test:update": "ava -u"
   },
   "dependencies": {
     "inquirer-directory": "^2.2.0",
@@ -21,10 +22,15 @@
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/npm": "^9.0.1",
     "@semantic-release/release-notes-generator": "^10.0.3",
+    "ava": "^4.3.1",
     "esbuild": "^0.14.49",
     "esbuild-register": "^3.3.3",
+    "recursive-readdir": "^2.2.2",
+    "rmfr": "^2.0.0",
     "tsup": "^6.1.3",
     "typescript": "^4.7.4"
   },
-  "repository": "https://github.com/seamapi/seam-plop"
+  "repository": "https://github.com/seamapi/seam-plop",
+  "author": "seveibar <seveibar@gmail.com>",
+  "license": "MIT"
 }

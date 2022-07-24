@@ -16,11 +16,6 @@ npm install -g seam-plop
 
 ## Usage
 
-```sh
-seam-plop --help
+Just execute `seam-plop` to get an interactive interface.
 
-seam-plop ava-config
-seam-plop gitignore
-seam-plop module
-seam-plop scripts
-```
+[List of commands and output in test.js.md](./test.js.md)
