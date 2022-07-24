@@ -31,12 +31,35 @@ test("snapshot for a bunch of commands", async (t) => {
     try {
       await rmfr("./test-output")
       execSync(
-        `mkdir -p ./test-output && yarn init -y --cwd ./test-output && npx plop --plopfile ./plopfile.js --dest ./test-output ${cmd}`,
+        `mkdir -p ./test-output && cd ./test-output && git init && yarn init -y && git add . && git commit -m 'initial' && npx plop --plopfile ../plopfile.js --cwd $(pwd) --dest $(pwd) ${cmd}`,
         {
           shell: true,
         }
       )
-      t.snapshot(await dirToTree("./test-output"), `seam-plop ${cmd}`)
+      const fileTree = await dirToTree("./test-output")
+      for (const filePath in fileTree) {
+        if (filePath.startsWith("test-output/.git/")) {
+          delete fileTree[filePath]
+        }
+      }
+      const packageJSONDiff = execSync(
+        "cd test-output && git diff package.json"
+      )
+        .toString()
+        .trim()
+      t.snapshot(
+        `${
+          packageJSONDiff ? `package.json changes:\n\n${packageJSONDiff}` : ""
+        }${Object.entries(fileTree)
+          .map(([fp, fc]) => [fp.replace("test-output/", ""), fc])
+          .filter(([fp]) => fp !== "package.json")
+          .map(
+            ([filePath, fileContent]) =>
+              `\n\n\n// ${filePath}\n\n${fileContent}`
+          )
+          .join("")}`.trim(),
+        `seam-plop ${cmd}`
+      )
       await rmfr("./test-output")
     } catch (e) {
       t.fail(
