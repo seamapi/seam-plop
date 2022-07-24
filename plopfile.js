@@ -33,9 +33,10 @@ export default (plop) => {
     description: "Create Github CI Release System with Semantic Release",
     prompts: [
       {
+        name: "internal",
         type: "confirm",
-        message: "?",
-        default: false,
+        message: "Is this an internal module (@seamapi/*)?",
+        default: true,
       },
     ],
     actions: [
