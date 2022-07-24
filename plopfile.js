@@ -23,7 +23,7 @@ export default (plop) => {
     actions: [
       {
         type: "add",
-        path: "./.github/npm-test.yml",
+        path: "./.github/workflows/npm-test.yml",
         templateFile: "./plop-templates/github-test.hbs",
       },
     ],
@@ -42,7 +42,7 @@ export default (plop) => {
     actions: [
       {
         type: "add",
-        path: "./.github/npm-semantic-release.yml",
+        path: "./.github/workflows/npm-semantic-release.yml",
         templateFile: "./plop-templates/github-release.yml.hbs",
       },
       {
