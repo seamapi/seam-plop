@@ -112,7 +112,7 @@ export default (
     actions: [
       {
         type: "add",
-        path: "./.prettierrc",
+        path: "./.gitignore",
         templateFile: "./plop-templates/gitignore.hbs",
       },
     ],
