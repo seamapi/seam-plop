@@ -32,7 +32,7 @@ test("snapshot for a bunch of commands", async (t) => {
     try {
       await rmfr("./test-output")
       execSync(
-        `mkdir -p ./test-output && cd ./test-output && git init && yarn init -y && git add . && git commit -m 'initial' && npx plop --plopfile ../plopfile.js --cwd $(pwd) --dest $(pwd) ${cmd}`,
+        `mkdir -p ./test-output && cd ./test-output && git init && echo '{ "name": "some-package" }' > package.json && git add . && git commit -m 'initial' && npx plop --plopfile ../plopfile.js --cwd $(pwd) --dest $(pwd) ${cmd}`,
         {
           shell: true,
         }
