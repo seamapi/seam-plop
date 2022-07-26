@@ -24,6 +24,7 @@ const commands = [
   "github-ci-vercel-deploy",
   "github-ci-release no",
   "github-ci-release yes",
+  "tsconfig",
 ]
 
 test("snapshot for a bunch of commands", async (t) => {
