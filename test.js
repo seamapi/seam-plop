@@ -8,6 +8,7 @@ async function dirToTree(dir) {
   const filePaths = await recursiveReadir(dir)
   const obj = {}
   for (const filePath of filePaths) {
+    if (filePath.includes("node_modules/")) continue
     const fileContent = (await readFile(filePath, "utf8")).toString()
     obj[filePath] = fileContent
   }
@@ -17,7 +18,7 @@ async function dirToTree(dir) {
 const commands = [
   `ava-config`,
   `gitignore`,
-  `prettierrc`,
+  `prettierrc yes`,
   "node-pg-migrate",
   "github-ci-test no",
   "github-ci-test yes",
@@ -41,6 +42,7 @@ test("snapshot for a bunch of commands", async (t) => {
       t.snapshot(
         `${Object.entries(fileTree)
           .map(([fp, fc]) => [fp.replace("test-output/", ""), fc])
+          .filter(([fp]) => fp !== "yarn.lock")
           .filter(([fp, content]) => {
             // Filter out package.json unless it's been modified
             if (fp !== "package.json") return true
