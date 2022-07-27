@@ -162,4 +162,16 @@ export default (
       },
     ],
   })
+
+  plop.setGenerator("tsconfig", {
+    description: "Create TypeScript Config",
+    prompts: [],
+    actions: [
+      {
+        type: "add",
+        path: "./tsconfig.json",
+        templateFile: "./plop-templates/tsconfig.json.hbs",
+      },
+    ],
+  })
 }
