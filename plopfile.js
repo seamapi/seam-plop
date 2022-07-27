@@ -2,14 +2,7 @@ export default (
   /** @type {import('plop').NodePlopAPI} */
   plop
 ) => {
-  plop.setActionType("install-deps", async (answers, config, plop) => {
-    // TODO IMPLEMENT
-    console.log(`install-deps not implemented, please manually install...`)
-    console.log({
-      answers,
-      config,
-    })
-  })
+  plop.load("plop-pack-npm-install-packages")
 
   plop.setGenerator("ava-config", {
     description: "Create ava.config.js",
@@ -64,8 +57,8 @@ export default (
         templateFile: "./plop-templates/release-config.js.hbs",
       },
       {
-        type: "install-deps",
-        devDependencies: ["semantic-release"],
+        type: "npmInstallPackages",
+        install: ["semantic-release"],
       },
       // add repository
       {
@@ -157,8 +150,8 @@ export default (
         },
       },
       {
-        type: "install-deps",
-        devDependencies: ["node-pg-migrate"],
+        type: "npmInstallPackages",
+        install: ["node-pg-migrate"],
       },
     ],
   })
