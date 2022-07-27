@@ -1,14 +1,28 @@
+import prettier from "prettier"
+import { execSync } from "child_process"
+
+const getPrettierTransform = (parser) => (template, data, cfg) => {
+  console.log({ template, data, cfg })
+  return prettier.format(template, { semi: false, parser })
+}
+
 export default (
   /** @type {import('plop').NodePlopAPI} */
   plop
 ) => {
   plop.setActionType("install-deps", async (answers, config, plop) => {
-    // TODO IMPLEMENT
-    console.log(`install-deps not implemented, please manually install...`)
-    console.log({
-      answers,
-      config,
-    })
+    if (answers.runInstall || answers.runInstall !== undefined) {
+      if (config.devDependencies && config.devDependencies.length > 0) {
+        const execLine = `yarn add --dev ${config.devDependencies.join(" ")}`
+        console.log(`Running "${execLine}"`)
+        execSync(execLine, { shell: true })
+      }
+      if (config.dependencies && config.dependencies.length > 0) {
+        const execLine = `yarn add ${config.devDependencies.join(" ")}`
+        console.log(`Running "${execLine}"`)
+        execSync(execLine, { shell: true })
+      }
+    }
   })
 
   plop.setGenerator("ava-config", {
@@ -19,6 +33,7 @@ export default (
         type: "add",
         path: "./ava.config.js",
         templateFile: "./plop-templates/ava.config.js.hbs",
+        transform: getPrettierTransform("babel"),
       },
     ],
   })
@@ -38,6 +53,7 @@ export default (
         type: "add",
         path: "./.github/workflows/npm-test.yml",
         templateFile: "./plop-templates/github-test.yml.hbs",
+        transform: getPrettierTransform("yaml"),
       },
     ],
   })
@@ -57,11 +73,13 @@ export default (
         type: "add",
         path: "./.github/workflows/npm-semantic-release.yml",
         templateFile: "./plop-templates/github-release.yml.hbs",
+        transform: getPrettierTransform("yaml"),
       },
       {
         type: "add",
         path: "./release.config.js",
         templateFile: "./plop-templates/release-config.js.hbs",
+        transform: getPrettierTransform("babel"),
       },
       {
         type: "install-deps",
@@ -90,18 +108,31 @@ export default (
         type: "add",
         path: "./.github/vercel-deploy.yml",
         templateFile: "./plop-templates/vercel-deploy.yml.hbs",
+        transform: getPrettierTransform("yaml"),
       },
     ],
   })
 
   plop.setGenerator("prettierrc", {
-    description: "Create Prettier Config",
-    prompts: [],
+    description: "Create Prettier Config & Install Prettier",
+    prompts: [
+      {
+        name: "runInstall",
+        type: "confirm",
+        message: "Do you want to install prettier dependency?",
+        default: true,
+      },
+    ],
     actions: [
       {
         type: "add",
         path: "./.prettierrc",
         template: `{ "semi": false }`,
+        transform: getPrettierTransform("json"),
+      },
+      {
+        type: "install-deps",
+        devDependencies: ["prettier"],
       },
     ],
   })
@@ -171,6 +202,7 @@ export default (
         type: "add",
         path: "./tsconfig.json",
         templateFile: "./plop-templates/tsconfig.json.hbs",
+        transform: getPrettierTransform("json"),
       },
     ],
   })
