@@ -32,28 +32,24 @@ test("snapshot for a bunch of commands", async (t) => {
     try {
       await rmfr("./test-output")
       execSync(
-        `mkdir -p ./test-output && cd ./test-output && git init && echo '{ "name": "some-package" }' > package.json && git add . && git commit -m 'initial' && npx plop --plopfile ../plopfile.js --cwd $(pwd) --dest $(pwd) ${cmd}`,
+        `mkdir -p ./test-output && cd ./test-output && echo '{ "name": "some-package" }' > package.json && npx plop --plopfile ../plopfile.js --cwd $(pwd) --dest $(pwd) ${cmd}`,
         {
           shell: true,
         }
       )
       const fileTree = await dirToTree("./test-output")
-      for (const filePath in fileTree) {
-        if (filePath.startsWith("test-output/.git/")) {
-          delete fileTree[filePath]
-        }
-      }
-      const packageJSONDiff = execSync(
-        "cd test-output && git diff package.json"
-      )
-        .toString()
-        .trim()
       t.snapshot(
-        `${
-          packageJSONDiff ? `package.json changes:\n\n${packageJSONDiff}` : ""
-        }${Object.entries(fileTree)
+        `${Object.entries(fileTree)
           .map(([fp, fc]) => [fp.replace("test-output/", ""), fc])
-          .filter(([fp]) => fp !== "package.json")
+          .filter(([fp, content]) => {
+            // Filter out package.json unless it's been modified
+            if (fp !== "package.json") return true
+
+            const packageJSON = JSON.parse(content)
+            // If it has more than just the "name", it's been modified
+            if (Object.keys(packageJSON).length > 1) return true
+            return false
+          })
           .map(
             ([filePath, fileContent]) =>
               `\n\n\n// ${filePath}\n\n${fileContent}`
