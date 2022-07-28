@@ -18,4 +18,6 @@ npm install -g seam-plop
 
 Just execute `seam-plop` to get an interactive interface.
 
+![](https://giphy.com/gifs/bI2CqJTk7G4bKl6sCC)
+
 [List of commands and output in test.js.md](./test.js.md)
