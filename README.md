@@ -18,4 +18,6 @@ npm install -g seam-plop
 
 Just execute `seam-plop` to get an interactive interface.
 
+<img src="https://raw.githubusercontent.com/seamapi/seam-plop/andrii-issue-3/gif-example/seam-plop-usage-example.gif" />
+
 [List of commands and output in test.js.md](./test.js.md)
