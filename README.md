@@ -2,6 +2,8 @@
 
 Provides common interactive template generators for [Seam](https://github.com/seamapi) projects.
 
+![](./gif-example/seam-plop-usage-example.gif)
+
 From the plop README:
 
 > With plop, you have your "best practice" method of creating any given pattern in CODE. Code that can easily be run from the terminal by typing plop. Not only does this save you from hunting around in your codebase for the right files to copy, but it also turns "the right way" into "the easiest way" to make new files.
@@ -17,7 +19,5 @@ npm install -g seam-plop
 ## Usage
 
 Just execute `seam-plop` to get an interactive interface.
-
-<img src="https://raw.githubusercontent.com/seamapi/seam-plop/andrii-issue-3/gif-example/seam-plop-usage-example.gif" />
 
 [List of commands and output in test.js.md](./test.js.md)
