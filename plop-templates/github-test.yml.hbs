@@ -24,10 +24,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 16
+          cache: "yarn"
       - name: Run NPM Install
-        run: yarn install
+        run: yarn install --frozen-lockfile
       - name: Run NPM Test
         run: yarn test
