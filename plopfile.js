@@ -80,12 +80,12 @@ export default (
       const isESM = packageJSON.type === "module"
 
       return [
-        // {
-        //   type: "add",
-        //   path: "./.github/workflows/npm-semantic-release.yml",
-        //   templateFile: "./plop-templates/github-release.yml.hbs",
-        //   transform: getPrettierTransform("yaml"),
-        // },
+        {
+          type: "add",
+          path: "./.github/workflows/npm-semantic-release.yml",
+          templateFile: "./plop-templates/github-release.yml.hbs",
+          transform: getPrettierTransform("yaml"),
+        },
         {
           type: "add",
           path: "./release.config.js",
@@ -93,22 +93,22 @@ export default (
           data: { isESM },
           transform: getPrettierTransform("babel"),
         },
-        // {
-        //   type: "install-deps",
-        //   devDependencies: ["semantic-release"],
-        // },
-        // // add repository
-        // {
-        //   type: "modify",
-        //   path: "./package.json",
-        //   transform: async (template, data, cfg) => {
-        //     // TODO check that "repository" is set
-        //     // get the correct value using `git remote -v`
-        //     // if no remote, guess based on package.json["name"] e.g.
-        //     // git@github.com:seamapi/package-name.git
-        //     return template
-        //   },
-        // },
+        {
+          type: "install-deps",
+          devDependencies: ["semantic-release"],
+        },
+        // add repository
+        {
+          type: "modify",
+          path: "./package.json",
+          transform: async (template, data, cfg) => {
+            // TODO check that "repository" is set
+            // get the correct value using `git remote -v`
+            // if no remote, guess based on package.json["name"] e.g.
+            // git@github.com:seamapi/package-name.git
+            return template
+          },
+        },
       ]
     },
   })
