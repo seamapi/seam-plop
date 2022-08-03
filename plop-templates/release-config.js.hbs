@@ -1,4 +1,9 @@
+{{^isESM}}
 module.exports = {
+{{/isESM}}
+{{#isESM}}
+export default {
+{{/isESM}}
   branches: ["main"],
   plugins: [
     "@semantic-release/commit-analyzer",
