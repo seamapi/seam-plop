@@ -22,7 +22,7 @@ const commands = [
   "node-pg-migrate",
   "github-ci-test no",
   "github-ci-test yes",
-  "github-ci-vercel-deploy",
+  "github-ci-vercel-deploy yes",
   "github-ci-release no",
   "github-ci-release yes",
   "tsconfig",

@@ -1,4 +1,9 @@
+{{^isESM}}
 module.exports = {
+{{/isESM}}
+{{#isESM}}
+export default {
+{{/isESM}}
   files: ["src/tests/**/*.test.ts"],
   extensions: ["ts"],
   require: ["esbuild-register"],

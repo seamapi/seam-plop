@@ -1,5 +1,6 @@
 import prettier from "prettier"
 import { execSync } from "child_process"
+import fs from "fs"
 
 const getPrettierTransform = (parser) => (template, data, cfg) => {
   console.log({ template, data, cfg })
@@ -28,14 +29,20 @@ export default (
   plop.setGenerator("ava-config", {
     description: "Create ava.config.js",
     prompts: [],
-    actions: [
-      {
-        type: "add",
-        path: "./ava.config.js",
-        templateFile: "./plop-templates/ava.config.js.hbs",
-        transform: getPrettierTransform("babel"),
-      },
-    ],
+    actions: () => {
+      const packageJSON = JSON.parse(fs.readFileSync("./package.json"))
+      const isESM = packageJSON.type === "module"
+
+      return [
+        {
+          type: "add",
+          path: "./ava.config.js",
+          templateFile: "./plop-templates/ava.config.js.hbs",
+          data: { isESM },
+          transform: getPrettierTransform("babel"),
+        },
+      ]
+    },
   })
 
   plop.setGenerator("github-ci-test", {
@@ -68,41 +75,55 @@ export default (
         default: true,
       },
     ],
-    actions: [
-      {
-        type: "add",
-        path: "./.github/workflows/npm-semantic-release.yml",
-        templateFile: "./plop-templates/github-release.yml.hbs",
-        transform: getPrettierTransform("yaml"),
-      },
-      {
-        type: "add",
-        path: "./release.config.js",
-        templateFile: "./plop-templates/release-config.js.hbs",
-        transform: getPrettierTransform("babel"),
-      },
-      {
-        type: "install-deps",
-        devDependencies: ["semantic-release"],
-      },
-      // add repository
-      {
-        type: "modify",
-        path: "./package.json",
-        transform: async (template, data, cfg) => {
-          // TODO check that "repository" is set
-          // get the correct value using `git remote -v`
-          // if no remote, guess based on package.json["name"] e.g.
-          // git@github.com:seamapi/package-name.git
-          return template
+    actions: () => {
+      const packageJSON = JSON.parse(fs.readFileSync("./package.json"))
+      const isESM = packageJSON.type === "module"
+
+      return [
+        {
+          type: "add",
+          path: "./.github/workflows/npm-semantic-release.yml",
+          templateFile: "./plop-templates/github-release.yml.hbs",
+          transform: getPrettierTransform("yaml"),
         },
-      },
-    ],
+        {
+          type: "add",
+          path: "./release.config.js",
+          templateFile: "./plop-templates/release-config.js.hbs",
+          data: { isESM },
+          transform: getPrettierTransform("babel"),
+        },
+        {
+          type: "install-deps",
+          devDependencies: ["semantic-release"],
+        },
+        // add repository
+        {
+          type: "modify",
+          path: "./package.json",
+          transform: async (template, data, cfg) => {
+            // TODO check that "repository" is set
+            // get the correct value using `git remote -v`
+            // if no remote, guess based on package.json["name"] e.g.
+            // git@github.com:seamapi/package-name.git
+            return template
+          },
+        },
+      ]
+    },
   })
 
   plop.setGenerator("github-ci-vercel-deploy", {
     description: "Setup Vercel Deployments",
-    prompts: [],
+    prompts: [
+      {
+        name: "migrate",
+        type: "confirm",
+        message:
+          "Do you want to migrate the production database before deploy?",
+        default: false,
+      },
+    ],
     actions: [
       {
         type: "add",
