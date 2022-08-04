@@ -21,13 +21,13 @@ jobs:
       - name: Migrate Database
         run: npm run db:migrate
         env:
-          DATABASE_URL: "${{ secrets.PRODUCTION_DATABASE_URL }}"
+          DATABASE_URL: $\{{ secrets.PRODUCTION_DATABASE_URL }}
       {{/migrate}}
       - name: Tell Vercel to deploy
         uses: amondnet/vercel-action@v25.1.0
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}           # Org Secret
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }} # Repo Secret
-          vercel-org-id: ${{ secrets.VERCEL_TEAM_ID }}        # Org Secret
-          scope: ${{ secrets.VERCEL_TEAM_ID }}                # Org Secret
+          vercel-token: $\{{ secrets.VERCEL_TOKEN }}           # Org Secret
+          vercel-project-id: $\{{ secrets.VERCEL_PROJECT_ID }} # Repo Secret
+          vercel-org-id: $\{{ secrets.VERCEL_TEAM_ID }}        # Org Secret
+          scope: $\{{ secrets.VERCEL_TEAM_ID }}                # Org Secret
           vercel-args: --prod
