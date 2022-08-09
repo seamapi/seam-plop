@@ -227,10 +227,9 @@ export default (
           "node-pg-migrate",
           "pg-connection-from-env",
           "chalk",
-          "pg",
           "debug",
         ],
-        dependencies: ["zapatos"],
+        dependencies: ["zapatos", "pg"],
       },
     ],
   })

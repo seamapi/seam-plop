@@ -1,12 +1,10 @@
 import process from "node:process"
 import chalk from "chalk"
 import { Client } from "pg"
-import { getEnv } from "env"
 import { migrate } from "./migrate-db"
 import { getConnectionStringFromEnv } from "pg-connection-from-env"
 
 export const reset = async () => {
-  const { DATABASE_URL } = getEnv()
 
   const seam_db = new Client({
     connectionString: DATABASE_URL,
