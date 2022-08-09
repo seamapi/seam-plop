@@ -5,15 +5,12 @@ import { migrate } from "./migrate-db"
 import { getConnectionStringFromEnv } from "pg-connection-from-env"
 
 export const reset = async () => {
-
+  const DATABASE_URL = getConnectionStringFromEnv()
   const seam_db = new Client({
     connectionString: DATABASE_URL,
   })
   const postgres_db = new Client({
-    connectionString: getConnectionStringFromEnv(
-      DATABASE_URL,
-      "postgres"
-    ),
+    connectionString: DATABASE_URL,
   })
 
   const database_name = seam_db.database!
