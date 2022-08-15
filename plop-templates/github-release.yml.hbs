@@ -28,11 +28,6 @@ jobs:
         run: npx semantic-release
       {{/internal}}
       {{#internal}}
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: "16.x"
-          registry-url: "https://npm.pkg.github.com"
       - name: Install dependencies
         env:
           NODE_AUTH_TOKEN: $\{{ secrets.GITHUB_TOKEN }}
