@@ -28,6 +28,7 @@ jobs:
         run: npx semantic-release
       {{/internal}}
       {{#internal}}
+          registry-url: "https://registry.npmjs.org"
       - name: Install dependencies
         env:
           NODE_AUTH_TOKEN: $\{{ secrets.GITHUB_TOKEN }}
