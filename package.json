@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "plop",
-    "test": "ava",
+    "test": "ava -T 120s",
     "test:update": "ava -u"
   },
   "dependencies": {
