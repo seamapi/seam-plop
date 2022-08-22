@@ -95,7 +95,12 @@ export default (
         },
         {
           type: "install-deps",
-          devDependencies: ["semantic-release"],
+          devDependencies: [
+            "@semantic-release/commit-analyzer",
+            "@semantic-release/release-notes-generator",
+            "@semantic-release/npm",
+            "@semantic-release/git",
+          ],
         },
         // add repository
         {
