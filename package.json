@@ -1,14 +1,14 @@
 {
   "name": "seam-plop",
   "type": "module",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "main": "index.js",
   "bin": {
     "seam-plop": "./bin.js"
   },
   "scripts": {
     "start": "plop",
-    "test": "ava",
+    "test": "ava -T 120s",
     "test:update": "ava -u"
   },
   "dependencies": {
