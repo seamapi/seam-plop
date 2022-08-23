@@ -65,7 +65,7 @@ export default (
     ],
   })
 
-  plop.setGenerator("github-ci-git", {
+  plop.setGenerator("github-ci-release", {
     description: "Create Github CI Release System with Semantic Release",
     prompts: [
       {
