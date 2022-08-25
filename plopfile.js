@@ -19,7 +19,7 @@ export default (
         execSync(execLine, { shell: true })
       }
       if (config.dependencies && config.dependencies.length > 0) {
-        const execLine = `yarn add ${config.devDependencies.join(" ")}`
+        const execLine = `yarn add ${config.dependencies.join(" ")}`
         console.log(`Running "${execLine}"`)
         execSync(execLine, { shell: true })
       }
@@ -74,6 +74,12 @@ export default (
         message: "Is this an internal module (@seamapi/*)?",
         default: true,
       },
+      {
+        name: "runInstall",
+        type: "confirm",
+        message: "Do you want to install semantic-release dependency?",
+        default: true,
+      },
     ],
     actions: () => {
       const packageJSON = JSON.parse(fs.readFileSync("./package.json"))
@@ -95,7 +101,12 @@ export default (
         },
         {
           type: "install-deps",
-          devDependencies: ["semantic-release"],
+          devDependencies: [
+            "@semantic-release/commit-analyzer",
+            "@semantic-release/release-notes-generator",
+            "@semantic-release/npm",
+            "@semantic-release/git",
+          ],
         },
         // add repository
         {
@@ -172,7 +183,14 @@ export default (
 
   plop.setGenerator("node-pg-migrate", {
     description: "Initialize node-pg-migrate in project",
-    prompts: [],
+    prompts: [
+      {
+        name: "runInstall",
+        type: "confirm",
+        message: "Do you want to install the dependencies?",
+        default: true,
+      },
+    ],
     actions: [
       {
         type: "add",
@@ -210,7 +228,13 @@ export default (
       },
       {
         type: "install-deps",
-        devDependencies: ["node-pg-migrate"],
+        devDependencies: [
+          "node-pg-migrate",
+          "pg-connection-from-env",
+          "chalk",
+          "debug",
+        ],
+        dependencies: ["zapatos", "pg"],
       },
     ],
   })

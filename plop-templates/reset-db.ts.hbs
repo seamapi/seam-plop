@@ -1,0 +1,39 @@
+import process from "node:process"
+import chalk from "chalk"
+import { Client } from "pg"
+import { migrate } from "./migrate-db"
+import { getConnectionStringFromEnv } from "pg-connection-from-env"
+
+export const reset = async () => {
+  const postgres_db = new Client({
+    connectionString: getConnectionStringFromEnv({ database: "postgres" }),
+  })
+  const seam_db = new Client({
+    connectionString: getConnectionStringFromEnv(),
+  })
+
+  const database_name = seam_db.database!
+
+  console.log(chalk.green(`Dropping database "${database_name}"...`))
+
+  await postgres_db.connect()
+  try {
+    await postgres_db.query(`DROP DATABASE ${database_name} WITH (FORCE);`)
+  } catch {}
+
+  console.log(chalk.green(`Creating database "${database_name}"...`))
+  await postgres_db.query(`CREATE DATABASE ${database_name};`)
+
+  console.log(chalk.green("Running migrations..."))
+  await migrate({ database_url: DATABASE_URL, update_typings: true })
+
+  console.log(chalk.green("Finished migrating"))
+
+  await Promise.all([seam_db.end(), postgres_db.end()])
+}
+
+void reset().catch((error) => {
+  console.error(error)
+  // eslint-disable-next-line unicorn/no-process-exit
+  process.exit(1)
+})

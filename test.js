@@ -19,12 +19,12 @@ const commands = [
   `ava-config`,
   `gitignore`,
   `prettierrc yes`,
-  "node-pg-migrate",
+  "node-pg-migrate no",
   "github-ci-test no",
   "github-ci-test yes",
   "github-ci-vercel-deploy yes",
-  "github-ci-release no",
-  "github-ci-release yes",
+  "github-ci-release no no",
+  "github-ci-release yes no",
   "tsconfig",
 ]
 
