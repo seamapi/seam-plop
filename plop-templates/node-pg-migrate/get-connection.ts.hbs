@@ -1,0 +1,16 @@
+import {
+  getPgConnectionFromEnv,
+  getConnectionStringFromEnv,
+} from "pg-connection-from-env"
+
+export const defaultDbEnvOpts = {
+  fallbackDefaults: {
+    database: "replace_with_default_db_name",
+  },
+}
+
+export const getDbConnectionFromEnv = () =>
+  getPgConnectionFromEnv(defaultDbEnvOpts)
+
+export const getDbConnectionStringFromEnv = () =>
+  getConnectionStringFromEnv(defaultDbEnvOpts)

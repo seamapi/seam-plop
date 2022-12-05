@@ -1,0 +1,57 @@
+/*
+Reset the database.
+This function/script is used in development to delete and re-migrate
+the database.
+It works like this...
+1. Kill other db connections
+2. Connect to the default "postgres" database
+3. Execute "DROP DATABASE seam_api"
+4. Execute "CREATE DATABASE seam_api"
+5. Run migrations
+Originally, we had this method drop all the schemas then re-run migrations,
+but this causes some issues because we couldn't account for modifications
+by third party libraries like graphile-worker or node-pg-migrate creating
+stuff outside their assigned schema.
+*/
+
+import chalk from "chalk"
+import migrate from "./migrate-db"
+import logger from "lib/logger"
+import { Client } from "pg"
+import { defaultDbEnvOpts, getDbConnectionFromEnv } from "./get-connection"
+import {
+  getConnectionStringFromEnv,
+  getPgConnectionFromEnv,
+} from "pg-connection-from-env"
+
+export const resetDb = async () => {
+  const postgres_client = new Client({
+    connectionString: getConnectionStringFromEnv({
+      ...defaultDbEnvOpts,
+      database: "postgres",
+    }),
+  })
+
+  await postgres_client.connect()
+
+  const { database } = getDbConnectionFromEnv()
+  logger.info(chalk.green(`Dropping database "${database}"...`))
+  await postgres_client
+    .query(`DROP DATABASE IF EXISTS ${database}`)
+    .catch((error: Error) => {
+      if (error.message.includes(`database "seam_api" does not exist`)) return
+      throw error
+    })
+
+  logger.info(chalk.green(`Creating database "${database}"...`))
+  await postgres_client.query(`CREATE DATABASE ${database};`)
+  await postgres_client.end()
+
+  // This db client is now connected to pm_api
+  logger.info(chalk.green("Running migrations..."))
+  await migrate({ update_typings: true })
+
+  logger.info(chalk.green("Finished migrating"))
+}
+
+export default resetDb
