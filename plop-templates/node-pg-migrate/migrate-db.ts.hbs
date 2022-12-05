@@ -49,7 +49,7 @@ export const migrate = async ({
       createSchema: true,
       migrationsTable: "pgmigrations",
       verbose: false,
-      dir: "./src/lib/db/migrations",
+      dir: "./src/db/migrations",
       logger,
     } as any),
     // TODO put graphile worker migration here
