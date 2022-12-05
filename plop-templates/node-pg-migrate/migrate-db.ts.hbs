@@ -1,37 +1,25 @@
+
+
 import nodePgMigrate from "node-pg-migrate"
-import getDB from "db/get-db"
 import * as zg from "zapatos/generate"
 import { Client } from "pg"
 import Debug from "debug"
+import {
+  getDbConnectionFromEnv,
+  getDbConnectionStringFromEnv,
+} from "./get-connection"
 
-const debug = Debug("MY_PROJECT_NAME")
+const debug = Debug("seam_pm")
 
 export const migrate = async ({
-  database_url,
-  db,
   update_typings = false,
   silent = false,
 }: {
-  database_url?: string
-  db?: any
   update_typings?: boolean
   silent?: boolean
 } = {}) => {
-  let client
-
-  if (!database_url) {
-    const conn = db?.connection || getDB.getConnectionInfo()
-    client = new Client(conn)
-    const { host, password, port, database, user, ssl } = conn
-    database_url = `postgresql://${user}:${password}@${host}:${port}/${database}${
-      ssl ? "?sslmode=no-verify" : ""
-    }`
-  }
-
-  client = new Client({
-    connectionString: database_url,
-  })
-
+  const conn = getDbConnectionFromEnv()
+  const client = new Client(conn as any)
   await client.connect()
 
   let logger
@@ -61,19 +49,17 @@ export const migrate = async ({
       createSchema: true,
       migrationsTable: "pgmigrations",
       verbose: false,
-      dir: "./db/migrations",
+      dir: "./src/lib/db/migrations",
       logger,
     } as any),
     // TODO put graphile worker migration here
   ])
 
   if (update_typings) {
-    const schemas = [
-      // TODO insert schemas to type
-    ]
+    const schemas = ["pm"]
     await zg.generate({
       db: {
-        connectionString: database_url,
+        connectionString: getDbConnectionStringFromEnv(),
       },
       schemas: Object.fromEntries(
         schemas.map((s) => [

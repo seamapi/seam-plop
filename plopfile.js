@@ -195,22 +195,32 @@ export default (
       {
         type: "add",
         path: "src/scripts/reset-db.ts",
-        template: `import resetDb from "lib/reset-db"\n\nresetDb()`,
+        template: `import resetDb from "lib/db/reset-db"\n\nresetDb()`,
       },
       {
         type: "add",
         path: "src/scripts/migrate-db.ts",
-        template: `import migrateDb from "lib/migrate-db"\n\nmigrateDb()`,
+        template: `import migrateDb from "lib/db/migrate-db"\n\nmigrateDb()`,
       },
       {
         type: "add",
         path: "src/lib/db/migrate-db.ts",
-        templateFile: "./plop-templates/migrate-db.ts.hbs",
+        templateFile: "./plop-templates/node-pg-migrate/migrate-db.ts.hbs",
       },
       {
         type: "add",
         path: "src/lib/db/reset-db.ts",
-        templateFile: "./plop-templates/reset-db.ts.hbs",
+        templateFile: "./plop-templates/node-pg-migrate/reset-db.ts.hbs",
+      },
+      {
+        type: "add",
+        path: "src/lib/db/index.ts",
+        templateFile: "./plop-templates/node-pg-migrate/index.ts.hbs",
+      },
+      {
+        type: "add",
+        path: "src/lib/db/get-connection.ts",
+        templateFile: "./plop-templates/node-pg-migrate/get-connection.ts.hbs",
       },
       {
         type: "modify",
