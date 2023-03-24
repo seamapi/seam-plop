@@ -1,0 +1,31 @@
+name: Bundle Size
+on:
+  pull_request:
+jobs:
+  npm_test:
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    name: Bundle Size
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18.x"
+          registry-url: "https://npm.pkg.github.com"
+          cache: npm
+      - run: npm install
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GWM_GH_TOKEN }}
+      - run: npm run build
+      - 
+        id: get_bundle_size
+        run:
+        |
+          echo "DIST_SIZE=$(du -sh dist | cut -f1)" >> $GITHUB_OUTPUT
+      - uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: "Bundle Size"
+          message: |
+            Bundle/`dist` size: ${{ steps.get_bundle_size.outputs.DIST_SIZE }}

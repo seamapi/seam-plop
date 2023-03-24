@@ -7,20 +7,20 @@ jobs:
   publish:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
     name: Release
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "16.x"
-          cache: "yarn"
+          node-version: "18.x"
+          cache: "npm"
       {{^internal}}
       - name: Install dependencies
         env:
           NODE_AUTH_TOKEN: $\{{ secrets.SEAMAPI_NPM_TOKEN }}
-        run: yarn install
+        run: npm install
       - name: Release
         env:
           NODE_AUTH_TOKEN: $\{{ secrets.SEAMAPI_NPM_TOKEN }}
@@ -32,5 +32,5 @@ jobs:
       - name: Install dependencies
         env:
           NODE_AUTH_TOKEN: $\{{ secrets.GITHUB_TOKEN }}
-        run: yarn install
+        run: npm install
       {{/internal}}

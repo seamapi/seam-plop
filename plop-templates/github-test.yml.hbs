@@ -4,7 +4,7 @@ jobs:
   npm_test:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
     name: Run NPM Test
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     {{#startPostgres}}
     services:
       postgres:
@@ -26,8 +26,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16
-          cache: "yarn"
+          cache: "npm"
       - name: Run NPM Install
-        run: yarn install --frozen-lockfile
+        run: npm install
       - name: Run NPM Test
-        run: yarn test
+        run: npm run test
