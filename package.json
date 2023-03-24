@@ -9,14 +9,14 @@
   "scripts": {
     "start": "plop",
     "test": "ava -T 120s",
-    "test:update": "ava -u"
+    "test:update": "ava -u",
+    "build:autoplop": "make-vfs ./autoplop ./autoplop.js"
   },
   "dependencies": {
     "inquirer-directory": "^2.2.0",
     "node-plop": "^0.31.0",
     "plop": "^3.1.1",
-    "plop-pack-npm-install-packages": "^0.0.3",
-    "prettier": "^2.7.1"
+    "plop-pack-npm-install-packages": "^0.0.3"
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^9.0.2",
@@ -26,6 +26,8 @@
     "ava": "^4.3.1",
     "esbuild": "^0.14.49",
     "esbuild-register": "^3.3.3",
+    "make-vfs": "^1.0.6",
+    "prettier": "^2.8.6",
     "recursive-readdir": "^2.2.2",
     "rmfr": "^2.0.0",
     "semantic-release": "^19.0.3",

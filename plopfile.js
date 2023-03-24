@@ -147,24 +147,13 @@ export default (
 
   plop.setGenerator("prettierrc", {
     description: "Create Prettier Config & Install Prettier",
-    prompts: [
-      {
-        name: "runInstall",
-        type: "confirm",
-        message: "Do you want to install prettier dependency?",
-        default: true,
-      },
-    ],
+    prompts: [],
     actions: [
       {
         type: "add",
         path: "./.prettierrc",
         template: `{ "semi": false }`,
         transform: getPrettierTransform("json"),
-      },
-      {
-        type: "install-deps",
-        devDependencies: ["prettier"],
       },
     ],
   })
@@ -248,6 +237,19 @@ export default (
         path: "./tsconfig.json",
         templateFile: "./plop-templates/tsconfig.json.hbs",
         transform: getPrettierTransform("json"),
+      },
+    ],
+  })
+
+  plop.setGenerator("tsconfig", {
+    description: "Github Workflow: Bundle Size",
+    prompts: [],
+    actions: [
+      {
+        type: "add",
+        path: "./.github/workflows/bundle-size.yml",
+        templateFile: "./plop-templates/bundle-size.yml.hbs",
+        transform: getPrettierTransform("yaml"),
       },
     ],
   })
